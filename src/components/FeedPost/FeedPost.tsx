@@ -5,21 +5,28 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
+import Comment from '../Comment';
 
 import styles from './styles';
+import { IPost } from '../../types/models';
 
-const FeedPost = () => {
+interface IFeedPost {
+    post: IPost
+}
+
+const FeedPost = ({post}: IFeedPost) => {
+
   return (
     <View style={styles.post}>
       {/* Header */}
       <View style={styles.header}>
         <Image
           source={{
-            uri: 'https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/1.jpg',
+            uri:post.user.image,
           }}
           style={styles.userAvatar}
         />
-        <Text style={styles.userName}>AndrewBrought</Text>
+        <Text style={styles.userName}>{post.user.username}</Text>
         <Entypo
           name="dots-three-horizontal"
           size={16}
@@ -30,7 +37,7 @@ const FeedPost = () => {
       {/* Content */}
       <Image
         source={{
-          uri: 'https://notjustdev-dummy.s3.us-east-2.amazonaws.com/images/1.jpg',
+          uri: post.image,
         }}
         style={styles.image}
       />
@@ -68,33 +75,22 @@ const FeedPost = () => {
         {/* Likes */}
         <Text style={styles.text}>
           Liked by <Text style={styles.bold}>lgrinivicius</Text> and{' '}
-          <Text style={styles.bold}>66 others</Text>
+          <Text style={styles.bold}>{post.nofLikes} others</Text>
         </Text>
 
         {/* Post description */}
         <Text style={styles.text}>
-          <Text style={styles.bold}>AndrewBrought</Text> Lorem ipsum dolor sit
-          amet, consectetur adip. A Particular purplose asdfjklkjasdf jklasdlfkj
-          lkjasdf thei s sid it fake writing of a post. So here it is!
+          <Text style={styles.bold}>{post.user.username}</Text> {post.description}
         </Text>
 
         {/* Comments */}
-        <Text style={styles.subText}>View all 16 comments</Text>
-        <View style={styles.comment}>
-          <Text style={styles.commentText}>
-            <Text style={styles.bold}>AndrewBrought</Text> Lorem ipsum dolor sit
-            amet, consectetur adip. A Particular purplose.
-          </Text>
-    
-          <AntDesign
-            name={'hearto'}
-            style={styles.icon}
-            color={colors.black}
-          />
-        </View>
+        <Text style={styles.subText}>View all {post.nofComments} comments</Text>
+        {post.comments.map(comment => (
+            <Comment key={comment.id} comment={comment} />
+        ))}
 
         {/* Post date */}
-        <Text style={styles.subText}>21 December, 2022</Text>
+        <Text style={styles.subText}>{post.createdAt}</Text>
       </View>
     </View>
   );
