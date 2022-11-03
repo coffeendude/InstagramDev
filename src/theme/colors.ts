@@ -3,10 +3,12 @@ const colors = {
 
     accent: '#ED4956',
 
+    border: '#dcdcdc',
+
     white: '#fff',
     black: '#000',
     grey: '#666',
-    lightgrey: '#ccc',
+    lightgrey: '#cccccc',
     
 };
 
