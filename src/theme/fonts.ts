@@ -13,6 +13,7 @@ const size = {
 
 const weight: {[key: string]: TextStyle["fontWeight"]} = {
     full: '900',
+    semiBold: '800',
     semi: '600',
     bold: 'bold',
     normal: 'normal',
