@@ -9,6 +9,8 @@ const colors = {
     black: '#000',
     grey: '#666',
     lightgrey: '#cccccc',
+
+    error: '#ff9494',
     
 };
 
