@@ -1,12 +1,15 @@
+import {useState} from 'react';
 import {View, Text, StyleSheet, Image, TextInput} from 'react-native';
 import {useForm, Controller, Control} from 'react-hook-form';
+import {launchImageLibrary} from 'react-native-image-picker';
+
 import user from '../../assets/data/user.json';
 import colors from '../../theme/colors';
 import fonts from '../../theme/fonts';
 import {IUser} from '../../types/models';
 
 const URL_REGEX =
-/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/;
+  /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/;
 
 type IEditableUserField = 'name' | 'username' | 'website' | 'bio';
 type IEditableUser = Pick<IUser, IEditableUserField>;
@@ -57,22 +60,38 @@ const CustomInput = ({
 );
 
 const EditProfileScreen = () => {
+    const [selectedPhoto, setSelectedPhoto] = useState<null | Asset>(null);
+
   const {control, handleSubmit} = useForm<IEditableUser>({
     defaultValues: {
-        name: user.name,
-        username: user.username,
-        website: user.website,
-        bio: user.bio
-    }
+      name: user.name,
+      username: user.username,
+      website: user.website,
+      bio: user.bio,
+    },
   });
 
   const onSubmit = (data: IEditableUser) => {
-    console.log('clicked submit', data);
+    // console.log('clicked submit', data);
   };
+
+  const onChangePhoto = () => {
+    launchImageLibrary(
+      {mediaType: 'photo'},
+      ({didCancel, errorCode, errorMessage, assets}) => {
+        if (!didCancel && !errorCode && assets && assets.length > 0) {
+          setSelectedPhoto(assets[0]);
+        }
+      },
+    );
+  };
+
   return (
     <View style={styles.page}>
-      <Image source={{uri: user.image}} style={styles.avatar} />
-      <Text style={styles.textButton}>Change profile photo</Text>
+      <Image source={{uri: selectedPhoto?.uri || user.image}} style={styles.avatar} />
+      <Text onPress={onChangePhoto} style={styles.textButton}>
+        Change profile photo
+      </Text>
 
       <CustomInput
         name="name"
