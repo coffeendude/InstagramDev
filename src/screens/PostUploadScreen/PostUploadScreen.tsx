@@ -67,6 +67,7 @@ const PostUploadScreen = () => {
     };
 
     const result = await camera.current.takePictureAsync(options);
+    console.log(result);
   };
 
   const startRecording = async () => {
